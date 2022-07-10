@@ -1,0 +1,22 @@
+.img-yes {
+    display: none;
+}
+.bg-image {
+    min-height: 80vh;
+}
+.bg-image-1 {
+    min-height: 50vh;
+}
+.icons img {
+    width: 25vh;
+}
+@media (max-width: 576px) {
+    img, .img-yes {
+        display: block;
+        margin: auto;
+        width: 100%;
+    }
+    .img-none {
+        display: none;
+    }
+}
