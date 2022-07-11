@@ -1,22 +1,19 @@
-.img-yes {
-    display: none;
-}
-.bg-image {
-    min-height: 80vh;
-}
+
 .bg-image-1 {
+    background-image: url("images/bg-masthead.jpg");
     min-height: 50vh;
+}
+.bg-image{
+    background-image: url("images/bg-masthead.jpg");
+    min-height: 80vh;
 }
 .icons img {
     width: 25vh;
 }
-@media (max-width: 576px) {
-    img, .img-yes {
-        display: block;
+@media (max-width: 3000px) {
+    img{
+        display: block !important;
         margin: auto;
-        width: 100%;
-    }
-    .img-none {
-        display: none;
+        width: 102%;
     }
 }
