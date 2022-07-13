@@ -106,7 +106,6 @@ func main() {
 	})
 
 	r.HandleFunc("/players", func(w http.ResponseWriter, r *http.Request) {
-
 		json.NewEncoder(w).Encode(Playerlist)
 	})
 	r.HandleFunc("/players/{id}", func(w http.ResponseWriter, r *http.Request) {
