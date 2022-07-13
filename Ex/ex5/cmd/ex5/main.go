@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -17,6 +19,10 @@ type Player struct {
 type infoplayer []Player
 
 func main() {
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Go to /players")
+	})
 
 	http.HandleFunc("/players", func(w http.ResponseWriter, r *http.Request) {
 
@@ -34,5 +40,8 @@ func main() {
 		json.NewEncoder(w).Encode(playerinfo)
 	})
 
-	http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":3000", nil)
+	if err != nil {
+		log.Fatal("error", err)
+	}
 }
