@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type Player struct {
@@ -41,8 +42,9 @@ func main() {
 		json.NewEncoder(w).Encode(playerinfo)
 	})
 
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":3000", r)
 	if err != nil {
-		log.Fatal("Error", err)
+		log.Fatal("errror", err)
 	}
+
 }
