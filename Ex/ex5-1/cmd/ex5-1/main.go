@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -17,6 +18,10 @@ type Player struct {
 	Genre     string    `json:"genre"`
 	Sport     string    `json:"sport"`
 	TeamName  string    `json:"team_name"`
+}
+type Response struct {
+	Status int     `json:"status"`
+	Data   Players `json:"data"`
 }
 
 type Players []Player
@@ -97,29 +102,69 @@ var Playerlist = Players{
 	},
 }
 
+type datos []Response
+
+var Datas = datos{
+	{
+		Status: http.StatusOK,
+		Data:   Playerlist,
+	},
+}
+
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello Sr Gonazlo Martinez A. Go to /players")
+}
+func PlayersHandler(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(Datas)
+}
+func IDHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	w.WriteHeader(http.StatusOK)
+
+	for _, player := range Playerlist {
+		if player.ID == vars["id"] {
+			json.NewEncoder(w).Encode(player)
+		}
+	}
+}
+func UpdateHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello Sr Gonazlo Martinez A. Go to /update/{id} ")
+}
+func UpdateIDHandler(w http.ResponseWriter, r *http.Request) {
+	
+	vars := mux.Vars(r)["id"]
+
+	var updatePlayer Player
+
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		fmt.Fprintf(w, "Error")
+	}
+	json.Unmarshal(reqBody, &updatePlayer)
+
+	for i, Player := range Playerlist {
+		if Player.ID == vars {
+			Player.ID = updatePlayer.ID
+			Player.FirstName = updatePlayer.FirstName
+			Player.LastName = updatePlayer.LastName
+			Player.Birthday = updatePlayer.Birthday
+			Player.Genre = updatePlayer.Genre
+			Player.TeamName = updatePlayer.TeamName
+			Playerlist = append(Playerlist[:i], Player)
+
+			json.NewEncoder(w).Encode(Player)
+		}
+	}
+}
+
 func main() {
 
 	r := mux.NewRouter()
-
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Go to /players")
-	})
-
-	r.HandleFunc("/players", func(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode(Playerlist)
-	})
-	r.HandleFunc("/players/{id}", func(w http.ResponseWriter, r *http.Request) {
-
-		vars := mux.Vars(r)
-		w.WriteHeader(http.StatusOK)
-
-		for _, player := range Playerlist {
-			if player.ID == vars["id"] {
-				json.NewEncoder(w).Encode(player)
-			}
-		}
-
-	})
+	r.HandleFunc("/", HomeHandler)
+	r.HandleFunc("/players", PlayersHandler)
+	r.HandleFunc("/players/{id}", IDHandler)
+	r.HandleFunc("/update", UpdateHandler)
+	r.HandleFunc("/update/{id}", UpdateIDHandler).Methods("PUT")
 
 	err := http.ListenAndServe(":3000", r)
 	if err != nil {
