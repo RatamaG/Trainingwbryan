@@ -8,9 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello Sr Gonazlo Martinez A. Go to /players")
-}
 func PlayersHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Datas)
 }
