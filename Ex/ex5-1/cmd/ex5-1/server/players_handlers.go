@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -6,16 +6,17 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"github.com/gorilla/mux"
+	"github.com/RatamaG/docs/cmd/ex5-1/pkg"
 )
 
 func PlayersHandler(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(Datas)
+	json.NewEncoder(w).Encode(pkg.Datas)
 }
 func IDHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	w.WriteHeader(http.StatusOK)
 
-	for _, player := range Playerlist {
+	for _, player := range pkg.Playerlist {
 		if player.ID == vars["id"] {
 			json.NewEncoder(w).Encode(player)
 		}
@@ -28,7 +29,7 @@ func UpdateIDHandler(w http.ResponseWriter, r *http.Request) {
 	
 	vars := mux.Vars(r)["id"]
 
-	var updatePlayer Player
+	var updatePlayer pkg.Player
 
 	reqBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -36,7 +37,7 @@ func UpdateIDHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	json.Unmarshal(reqBody, &updatePlayer)
 
-	for i, Player := range Playerlist {
+	for i, Player := range pkg.Playerlist {
 		if Player.ID == vars {
 			Player.ID = updatePlayer.ID
 			Player.FirstName = updatePlayer.FirstName
@@ -44,7 +45,7 @@ func UpdateIDHandler(w http.ResponseWriter, r *http.Request) {
 			Player.Birthday = updatePlayer.Birthday
 			Player.Genre = updatePlayer.Genre
 			Player.TeamName = updatePlayer.TeamName
-			Playerlist = append(Playerlist[:i], Player)
+			pkg.Playerlist = append(pkg.Playerlist[:i], Player)
 
 			json.NewEncoder(w).Encode(Player)
 		}
