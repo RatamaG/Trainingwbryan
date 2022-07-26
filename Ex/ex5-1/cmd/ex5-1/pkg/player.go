@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"net/http"
 	"time"
 )
 
@@ -92,16 +91,8 @@ var Playerlist = Players{
 		TeamName:  "Club Deportivo Popular Junior Fútbol Club S.A.",
 	},
 }
+
 type Response struct {
 	Status int     `json:"status"`
 	Data   Players `json:"data"`
-}
-
-type datos []Response
-
-var Datas = datos{
-	{
-		Status: http.StatusOK,
-		Data: Players(Playerlist),
-	},
 }

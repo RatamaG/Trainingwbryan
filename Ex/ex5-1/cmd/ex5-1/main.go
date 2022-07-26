@@ -11,10 +11,11 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", server.HomeHandler)
-	r.HandleFunc("/players", server.PlayersHandler)
-	r.HandleFunc("/players/{id}", server.IDHandler)
-	r.HandleFunc("/update", server.UpdateHandler)
-	r.HandleFunc("/update/{id}", server.UpdateIDHandler).Methods("PUT")
+	r.HandleFunc("/players", server.GetPlayers)
+	r.HandleFunc("/players/{id}", server.GetPlayer)
+	r.HandleFunc("/update/{id}", server.UpdatePlayer).Methods("PUT")
+	r.HandleFunc("/delete/{id}", server.DeletePlayer).Methods("DELETE")
+	r.HandleFunc("/newplayer", server.CreatePlayer).Methods("POST")
 
 	err := http.ListenAndServe(":3000", r)
 	if err != nil {
@@ -22,4 +23,3 @@ func main() {
 	}
 
 }
-
