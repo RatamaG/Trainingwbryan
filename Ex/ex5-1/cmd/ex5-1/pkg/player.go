@@ -112,48 +112,48 @@ func isLetter(s string) bool {
 }
 
 func (p Player) Validate() (bool, string) {
+
 	today := time.Now()
 	tomorrow := today.Add(24 * time.Hour)
 
 	if strings.TrimSpace(p.FirstName) == "" {
 		return false, "First Name can't be blank"
 	}
+
 	if !IsLetter(p.FirstName) {
 		return false, "First Name can't contain numbers or special characters"
 	}
 
-
 	if strings.TrimSpace(p.LastName) == "" {
 		return false, "Last Name can't be blank"
 	}
+
 	if !IsLetter(p.LastName) {
 		return false, "Last Name can't contain numbers or special characters"
 	}
 
-
 	if strings.TrimSpace(p.Sport) == "" {
 		return false, "Sport name can't be blank"
 	}
+
 	if !IsLetter(p.Sport) {
 		return false, "Sport name can't contain numbers or special characters"
 	}
 
-
-	if strings.TrimSpace(p.TeamName) == "" {
-		return false, "Team name can't be blank"
+	if p.Birthday.After(tomorrow) {
+		return false, "Birthday Must be a date and can't be a date in the future"
 	}
-	if !isLetter(p.TeamName) {
-		return false, "Team Name can't contain special characters"
-	}
-
 
 	if p.Genre != "M" && p.Genre != "F" {
 		return false, "Gender can be only M or F"
 	}
 
+	if strings.TrimSpace(p.TeamName) == "" {
+		return false, "Team name can't be blank"
+	}
 
-	if p.Birthday.After(tomorrow) {
-		return false, "Birthday Must be a date and can't be a date in the future"
+	if !isLetter(p.TeamName) {
+		return false, "Team Name can't contain special characters"
 	}
 
 	return true, ""
