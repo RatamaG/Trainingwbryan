@@ -122,40 +122,39 @@ func (p Player) Validate() (bool, string) {
 		return false, "First Name can't contain numbers or special characters"
 	}
 
-	//
+
 	if strings.TrimSpace(p.LastName) == "" {
 		return false, "Last Name can't be blank"
 	}
 	if !IsLetter(p.LastName) {
-		return false, "First Name can't contain numbers or special characters"
+		return false, "Last Name can't contain numbers or special characters"
 	}
 
-	//
+
 	if strings.TrimSpace(p.Sport) == "" {
-		return false, "Sport can't be blank"
+		return false, "Sport name can't be blank"
 	}
 	if !IsLetter(p.Sport) {
-		return false, "First Name can't contain numbers or special characters"
+		return false, "Sport name can't contain numbers or special characters"
 	}
 
-	//
+
 	if strings.TrimSpace(p.TeamName) == "" {
 		return false, "Team name can't be blank"
 	}
 	if !isLetter(p.TeamName) {
-		return false, "First Name can't contain numbers or special characters"
+		return false, "Team Name can't contain numbers or special characters"
 	}
 
-	//
+
 	if p.Genre != "M" && p.Genre != "F" {
 		return false, "Gender can be only M or F"
 	}
 
-	//
+
 	if p.Birthday.After(tomorrow) {
 		return false, "Birthday Must be a date and can't be a date in the future"
 	}
-	// More validations ...
 
 	return true, ""
 }
