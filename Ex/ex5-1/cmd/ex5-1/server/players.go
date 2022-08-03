@@ -43,6 +43,18 @@ func UpdatePlayer(w http.ResponseWriter, r *http.Request) {
 	}
 	json.Unmarshal(reqBody, &updatePlayer)
 
+	isValid, message := updatePlayer.Validate()
+
+	if !isValid {
+		response := pkg.Response{
+			Status:  http.StatusUnprocessableEntity,
+			Data:    pkg.Players{},
+			Message: message,
+		}
+
+		json.NewEncoder(w).Encode(response)
+	}
+
 	for i, Player := range pkg.Playerlist {
 		if Player.ID == vars {
 			Player.ID = updatePlayer.ID
@@ -53,22 +65,43 @@ func UpdatePlayer(w http.ResponseWriter, r *http.Request) {
 			Player.TeamName = updatePlayer.TeamName
 			pkg.Playerlist = append(pkg.Playerlist[:i], Player)
 
-			json.NewEncoder(w).Encode(Player)
+			Response := pkg.Response{
+				Status:  http.StatusOK,
+				Data:    pkg.Playerlist,
+				Message: "Player Updated successfully",
+			}
+			json.NewEncoder(w).Encode(Response)
 		}
+
 	}
 }
 
 func DeletePlayer(w http.ResponseWriter, r *http.Request) {
 
+	var DeletePlayer pkg.Player
+
 	vars := mux.Vars(r)["id"]
+	
+	isValid, message := DeletePlayer.Validate()
+
+	if !isValid {
+		response := pkg.Response{
+			Status:  http.StatusUnprocessableEntity,
+			Data:    pkg.Players{},
+			Message: message,
+		}
+
+		json.NewEncoder(w).Encode(response)
+	}
 
 	for i, Player := range pkg.Playerlist {
 		if Player.ID == vars {
 			pkg.Playerlist = append(pkg.Playerlist[:i], pkg.Playerlist[i+1:]...)
 
 			Response := pkg.Response{
-				Status: http.StatusOK,
-				Data:   pkg.Playerlist,
+				Status:  http.StatusOK,
+				Data:    pkg.Playerlist,
+				Message: "Player Delete successfully",
 			}
 			json.NewEncoder(w).Encode(Response)
 		}
@@ -86,11 +119,25 @@ func CreatePlayer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.Unmarshal(reqBody, &newPlayer)
+
+	isValid, message := newPlayer.Validate()
+
+	if !isValid {
+		response := pkg.Response{
+			Status:  http.StatusUnprocessableEntity,
+			Data:    pkg.Players{},
+			Message: message,
+		}
+
+		json.NewEncoder(w).Encode(response)
+	}
 	pkg.Playerlist = append(pkg.Playerlist, newPlayer)
 
 	Response := pkg.Response{
-		Status: http.StatusOK,
-		Data:   pkg.Playerlist,
+		Status:  http.StatusOK,
+		Data:    pkg.Playerlist,
+		Message: "Player Created successfully",
 	}
 	json.NewEncoder(w).Encode(Response)
+
 }

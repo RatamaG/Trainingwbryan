@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"regexp"
+	"strings"
 	"time"
 )
 
@@ -93,6 +95,67 @@ var Playerlist = Players{
 }
 
 type Response struct {
-	Status int     `json:"status"`
-	Data   Players `json:"data"`
+	Status  int     `json:"status"`
+	Data    Players `json:"data"`
+	Message string  `json:"message"`
+}
+
+var IsLetter = regexp.MustCompile(`^[a-zA-Z]+$`).MatchString
+
+func isLetter(s string) bool {
+	for _, r := range s {
+		if (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') && (r < '0' || r > '9') {
+			return false
+		}
+	}
+	return true
+}
+
+func (p Player) Validate() (bool, string) {
+	today := time.Now()
+	tomorrow := today.Add(24 * time.Hour)
+
+	if strings.TrimSpace(p.FirstName) == "" {
+		return false, "First Name can't be blank"
+	}
+	if !IsLetter(p.FirstName) {
+		return false, "First Name can't contain numbers or special characters"
+	}
+
+	//
+	if strings.TrimSpace(p.LastName) == "" {
+		return false, "Last Name can't be blank"
+	}
+	if !IsLetter(p.LastName) {
+		return false, "First Name can't contain numbers or special characters"
+	}
+
+	//
+	if strings.TrimSpace(p.Sport) == "" {
+		return false, "Sport can't be blank"
+	}
+	if !IsLetter(p.Sport) {
+		return false, "First Name can't contain numbers or special characters"
+	}
+
+	//
+	if strings.TrimSpace(p.TeamName) == "" {
+		return false, "Team name can't be blank"
+	}
+	if !isLetter(p.TeamName) {
+		return false, "First Name can't contain numbers or special characters"
+	}
+
+	//
+	if p.Genre != "M" && p.Genre != "F" {
+		return false, "Gender can be only M or F"
+	}
+
+	//
+	if p.Birthday.After(tomorrow) {
+		return false, "Birthday Must be a date and can't be a date in the future"
+	}
+	// More validations ...
+
+	return true, ""
 }
