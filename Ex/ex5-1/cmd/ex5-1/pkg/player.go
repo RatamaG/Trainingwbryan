@@ -143,7 +143,7 @@ func (p Player) Validate() (bool, string) {
 		return false, "Team name can't be blank"
 	}
 	if !isLetter(p.TeamName) {
-		return false, "Team Name can't contain numbers or special characters"
+		return false, "Team Name can't contain special characters"
 	}
 
 
