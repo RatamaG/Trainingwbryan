@@ -1,59 +1,160 @@
 package pkg
 
 import (
-	"regexp"
-	"strings"
 	"testing"
 	"time"
 )
 
 func TestValidate(t *testing.T) {
+	testCases := []struct {
+		Player  Player
+		Valid   bool
+		Message string
+	}{
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Perez",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+				Sport:     "Soccer",
+			},
+			Valid:   true,
+			Message: "",
+		},
+		{
+			Player: Player{
+				FirstName: "",
+				LastName:  "Perez",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "First Name can't be blank",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael@",
+				LastName:  "Perez",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "First Name can't contain numbers or special characters",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "Last Name can't be blank",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Perez!5",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "Last Name can't contain numbers or special characters",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Pere",
+				Sport:     "",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "Sport name can't be blank",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Pere",
+				Sport:     "Soccer90",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "Sport name can't contain numbers or special characters",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Pere",
+				Sport:     "Soccer",
+				Birthday:  time.Now().Add(time.Hour * 24 * 10),
+				Genre:     "M",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "Birthday Must be a date and can't be a date in the future",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Pere",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "K",
+				TeamName:  "Chelsea",
+			},
+			Valid:   false,
+			Message: "Gender can be only M or F",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Pere",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "",
+			},
+			Valid:   false,
+			Message: "Team name can't be blank",
+		},
+		{
+			Player: Player{
+				FirstName: "Rafael",
+				LastName:  "Pere",
+				Sport:     "Soccer",
+				Birthday:  time.Now(),
+				Genre:     "M",
+				TeamName:  "Chelsea!@",
+			},
+			Valid:   false,
+			Message: "Team Name can't contain special characters",
+		},
 
-	FirstName := "Rafael"
-	LastName := "Rafael"
-	Sport := "Cricket"
-	Birthday :=  time.Date(1991, time.October, 10, 9, 12, 0, 0, time.UTC) 
-	Genre := "M"
-	TeamName:= "Junior"
-
-	today := time.Now()
-	tomorrow := today.Add(24 * time.Hour)
-
-	var IsLetter = regexp.MustCompile(`^[a-zA-Z]+$`).MatchString
-
-	if strings.TrimSpace(FirstName) == "" {
-		t.Errorf("The first name was expected not to be a white space")
 	}
 
-	if !IsLetter(FirstName) {
-		t.Errorf("First Name can't contain numbers or special characters")
-	}
+	for index, tcase := range testCases {
+		valid, message := tcase.Player.Validate()
 
-	if strings.TrimSpace(LastName) == "" {
-		t.Errorf("The last name was expected not to be a white space")
-	}
+		if valid != tcase.Valid {
+			t.Errorf("[Valid] A validation is not well, index: %v", index)
+		}
 
-	if !IsLetter(LastName) {
-		t.Errorf("Last Name can't contain numbers or special characters")
-	}
-	if strings.TrimSpace(Sport) == "" {
-		t.Errorf("The sport name was expected not to be a white space")
-	}
-
-	if !IsLetter(Sport) {
-		t.Errorf("Sport name can't contain numbers or special characters")
-	}
-	if Birthday.After(tomorrow) {
-		t.Errorf("Birthday Must be a date and can't be a date in the future")
-	}
-	if Genre != "M" && Genre != "F" {
-		t.Errorf("Gender can be only M or F")
-	}
-	if strings.TrimSpace(TeamName) == "" {
-		t.Errorf("Team name can't be blank")
-	}
-
-	if !isLetter(TeamName) {
-		t.Errorf("Team Name can't contain special characters")
+		if message != tcase.Message {
+			t.Errorf("[Message] A validation is not well, index: %v", index)
+		}
 	}
 }
