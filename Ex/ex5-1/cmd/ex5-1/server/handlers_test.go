@@ -1,11 +1,12 @@
 package server
 
 import (
+	"bytes"
 	"encoding/json"
-	"github.com/RatamaG/docs/cmd/ex5-1/pkg"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"github.com/RatamaG/docs/cmd/ex5-1/pkg"
 )
 
 func Test_users(t *testing.T) {
@@ -61,7 +62,15 @@ func Test_user_get_player(t *testing.T) {
 
 func Test_user_Update(t *testing.T) {
 
-	req, err := http.NewRequest(http.MethodPut, "/update/{id}", nil)
+	player := []byte(`{ ID:"47f1923a-0227-11ed-b939-0242ac120002",
+	FirstName: "Ra",
+	LastName:  "TamaG",
+	Birthday:  time.Date(1998, time.June, 26, 12, 35, 0, 0, time.UTC),
+	Genre:     "M",
+	Sport:     "Cricket",
+	TeamName:  "Caballeros de Kolkata", }`)
+
+	req, err := http.NewRequest(http.MethodPut, "/update/{id}", bytes.NewBuffer(player))
 
 	if err != nil {
 		t.Fatal(err)
@@ -113,7 +122,15 @@ func Test_user_Delete(t *testing.T) {
 
 func Test_user_NewPlayer(t *testing.T) {
 
-	req, err := http.NewRequest(http.MethodPost, "/newplayer", nil)
+	player := []byte(`{ ID:"47f1923a-0227-11ed-b939-0242ac120002",
+	FirstName: "Ra",
+	LastName:  "TamaG",
+	Birthday:  time.Date(1998, time.June, 26, 12, 35, 0, 0, time.UTC),
+	Genre:     "M",
+	Sport:     "Cricket",
+	TeamName:  "Caballeros de Kolkata", }`)
+
+	req, err := http.NewRequest(http.MethodPost, "/newplayer", bytes.NewBuffer(player))
 
 	if err != nil {
 		t.Fatal(err)
