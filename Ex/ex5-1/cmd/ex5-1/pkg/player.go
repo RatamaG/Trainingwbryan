@@ -4,10 +4,11 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"github.com/google/uuid"
 )
 
 type Player struct {
-	ID        string    `json:"ID"`
+	ID         uuid.UUID   `json:"ID"`
 	FirstName string    `json:"name"`
 	LastName  string    `json:"last_name"`
 	Birthday  time.Time `json:"birthday"`
@@ -21,7 +22,7 @@ type Players []Player
 var Playerlist = Players{
 
 	{
-		ID:        "47f1923a-0227-11ed-b939-0242ac120002",
+		ID:        uuid.New(),
 		FirstName: "Ra",
 		LastName:  "TamaG",
 		Birthday:  time.Date(1998, time.June, 26, 12, 35, 0, 0, time.UTC),
@@ -30,7 +31,7 @@ var Playerlist = Players{
 		TeamName:  "Caballeros de Kolkata",
 	},
 	{
-		ID:        "04ef0cad-c366-486b-8a98-8480b7a57442",
+		ID:        uuid.New(),
 		FirstName: "Fernando",
 		LastName:  "Uribe",
 		Birthday:  time.Date(1988, time.January, 1, 11, 1, 0, 0, time.UTC),
@@ -39,7 +40,7 @@ var Playerlist = Players{
 		TeamName:  "Club Deportivo Popular Junior Fútbol Club S.A.",
 	},
 	{
-		ID:        "47f1946a-0227-11ed-b939-0242ac120002",
+		ID:       uuid.New(),
 		FirstName: "Imer",
 		LastName:  "Machado",
 		Birthday:  time.Date(1973, time.March, 26, 17, 16, 0, 0, time.UTC),
@@ -48,7 +49,7 @@ var Playerlist = Players{
 		TeamName:  "Naciopan",
 	},
 	{
-		ID:        "6ac7fa78-9b91-48c6-b8cf-45e917844d4b",
+		ID:        uuid.New(),
 		FirstName: "Legone",
 		LastName:  "James",
 		Birthday:  time.Date(1984, time.December, 30, 12, 9, 0, 0, time.UTC),
@@ -57,7 +58,7 @@ var Playerlist = Players{
 		TeamName:  "Lakers",
 	},
 	{
-		ID:        "f37c12fd-e710-4d9b-99fa-fd4c60931b57",
+		ID:       uuid.New(),
 		FirstName: "Mariana",
 		LastName:  "Pajon",
 		Birthday:  time.Date(1991, time.October, 10, 9, 12, 0, 0, time.UTC),
@@ -66,7 +67,7 @@ var Playerlist = Players{
 		TeamName:  "Colombia",
 	},
 	{
-		ID:        "47f196cc-0227-11ed-b939-0242ac120002",
+		ID:        uuid.New(),
 		FirstName: "Russell",
 		LastName:  "Westbrick",
 		Birthday:  time.Date(1988, time.November, 12, 18, 7, 0, 0, time.UTC),
@@ -75,7 +76,7 @@ var Playerlist = Players{
 		TeamName:  "Lakers",
 	},
 	{
-		ID:        "0ae0bdf1-2a75-405d-9470-9f525c9b597e",
+		ID:        uuid.New(),
 		FirstName: "Catherine",
 		LastName:  "Ibarguen",
 		Birthday:  time.Date(1984, time.February, 12, 19, 12, 0, 0, time.UTC),
@@ -84,7 +85,7 @@ var Playerlist = Players{
 		TeamName:  "Colombia",
 	},
 	{
-		ID:        "47f196cc-0227-11ed-b939-0242ac120002",
+		ID:        uuid.New(),
 		FirstName: "Carlitos",
 		LastName:  "Cow",
 		Birthday:  time.Date(1998, time.June, 26, 9, 15, 0, 0, time.UTC),
