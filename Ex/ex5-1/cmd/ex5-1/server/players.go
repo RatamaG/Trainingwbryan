@@ -17,7 +17,7 @@ func GetPlayers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Response)
 }
 func GetPlayer(w http.ResponseWriter, r *http.Request) {
-	
+
 	vars := mux.Vars(r)
 
 	for _, Player := range pkg.Playerlist {
@@ -28,6 +28,7 @@ func GetPlayer(w http.ResponseWriter, r *http.Request) {
 			}
 			json.NewEncoder(w).Encode(Response)
 		}
+		fmt.Println("Este es mi player.ID.String()", Player.ID.String())
 	}
 }
 func UpdatePlayer(w http.ResponseWriter, r *http.Request) {
@@ -80,7 +81,7 @@ func DeletePlayer(w http.ResponseWriter, r *http.Request) {
 	var DeletePlayer pkg.Player
 
 	vars := mux.Vars(r)["id"]
-
+	
 	isValid, message := DeletePlayer.Validate()
 
 	if !isValid {

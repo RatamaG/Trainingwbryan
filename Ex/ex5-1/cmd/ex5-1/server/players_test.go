@@ -32,12 +32,10 @@ func Test_users(t *testing.T) {
 	if len(response.Data) != len(pkg.Playerlist) {
 		t.Error("expected", response.Status)
 	}
-	fmt.Println("", response.Status)
-	fmt.Println("", response.Data)
 }
 func Test_user_get_player(t *testing.T) {
 
-	req, err := http.NewRequest(http.MethodGet, "/players/967ef52a-898a-4a83-994f-300bdaaa2bac", nil)
+	req, err := http.NewRequest(http.MethodGet, "/players/affb9fb4-69d9-4cc9-a966-0729d182a6a2", nil)
 
 	if err != nil {
 		t.Fatal(err)
@@ -51,7 +49,9 @@ func Test_user_get_player(t *testing.T) {
 	player := pkg.Player{}
 	json.Unmarshal(res.Body.Bytes(), &response)
 
-	if player.ID.String() != "967ef52a-898a-4a83-994f-300bdaaa2bac"{
+	fmt.Println("Este es mi player.ID.String()", player.ID.String())
+
+	if player.ID.String() != "affb9fb4-69d9-4cc9-a966-0729d182a6a2"{
 		t.Error("They must be the same id")
 	}
 	if response.Status != http.StatusOK {
